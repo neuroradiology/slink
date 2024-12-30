@@ -35,11 +35,15 @@ final readonly class ID extends AbstractValueObject implements AggregateRootId {
     return self::fromString((string) $value);
   }
   
+  public static function generateRaw(): string {
+    return Uuid::uuid4()->toString();
+  }
+  
   /**
    * @return static
    */
   public static function generate(): static {
-    return new self(Uuid::uuid4()->toString());
+    return new self(self::generateRaw());
   }
   
   /**

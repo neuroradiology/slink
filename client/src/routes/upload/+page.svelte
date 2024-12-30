@@ -93,7 +93,7 @@
   });
 
   let processing = $derived($isLoading || $pageIsChanging);
-  let disabled = $derived(processing || !data.user);
+  let disabled = $derived(processing);
 </script>
 
 <svelte:head>

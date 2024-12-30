@@ -56,7 +56,6 @@ export const ApiConnector = (options: ApiOptions): Handle => {
       method,
       headers,
       body,
-      credentials: 'omit',
       duplex: 'half',
     };
 

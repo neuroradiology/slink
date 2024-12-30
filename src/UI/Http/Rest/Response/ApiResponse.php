@@ -6,6 +6,7 @@ namespace UI\Http\Rest\Response;
 
 use Slink\Shared\Application\Http\Collection;
 use Slink\Shared\Application\Http\Item;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ApiResponse extends JsonResponse {
@@ -92,6 +93,24 @@ class ApiResponse extends JsonResponse {
       ],
       $status
     );
+  }
+  
+  /**
+   * @param array<string, mixed> $cookies
+   * @return $this
+   */
+  public function withCookies(array $cookies): self {
+    foreach ($cookies as $name => $value) {
+      $this->headers->setCookie(new Cookie($name, $value));
+    }
+    
+    return $this;
+  }
+  
+  public function withCookie(string $name, string $value): self {
+    $this->headers->setCookie(new Cookie($name, $value, secure: true, httpOnly: true, sameSite: Cookie::SAMESITE_STRICT));
+    
+    return $this;
   }
   
   /**

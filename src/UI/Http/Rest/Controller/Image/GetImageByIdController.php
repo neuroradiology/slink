@@ -14,19 +14,18 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use UI\Http\Rest\Response\ApiResponse;
 
 #[AsController]
-#[Route(path: '/image/{id}/detail', name: 'get_image_by_id', methods: ['GET'])]
-#[IsGranted('IS_AUTHENTICATED_FULLY')]
+#[Route(path: '/public/image/{id}/detail', name: 'get_image_by_id', methods: ['GET'])]
 final class GetImageByIdController {
   use QueryTrait;
   
   public function __invoke(
-    #[CurrentUser] JWTUser $user,
     string $id,
+    #[CurrentUser] ?JWTUser $user = null,
   ): ApiResponse {
     $query = new GetImageByIdQuery($id);
     
     $image = $this->ask($query->withContext([
-      'user' => $user
+      'userId' => $user?->getIdentifier(),
     ]));
     
     return ApiResponse::one($image);

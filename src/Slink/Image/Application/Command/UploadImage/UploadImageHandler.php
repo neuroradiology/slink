@@ -38,13 +38,11 @@ final readonly class UploadImageHandler implements CommandHandlerInterface {
   /**
    * @throws DateTimeException
    */
-  public function __invoke(UploadImageCommand $command, ?string $userId = null): void {
+  public function __invoke(UploadImageCommand $command, string $userId): void {
     $file = $command->getImageFile();
-    $imageId = $command->getId();
+    $imageId = $command->id;
     
-    $userId = $userId
-      ? ID::fromString($userId)
-      : ID::generate();
+    $userId = ID::fromString($userId);
     
     if($this->imageAnalyzer->isConversionRequired($file->getMimeType())) {
       $file = $this->imageTransformer->convertToJpeg($file);

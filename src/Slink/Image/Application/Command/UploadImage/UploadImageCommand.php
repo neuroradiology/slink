@@ -10,10 +10,14 @@ use Slink\Shared\Infrastructure\MessageBus\EnvelopedMessage;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final readonly class UploadImageCommand implements CommandInterface {
+final class UploadImageCommand implements CommandInterface {
   use EnvelopedMessage;
   
-  private ID $id;
+  public ID $id {
+    get {
+      return $this->id;
+    }
+  }
   
   /**
    * @param File $image
@@ -29,21 +33,14 @@ final readonly class UploadImageCommand implements CommandInterface {
         >See supported formats</a>
         MESSAGE,
     )]
-    private File $image,
+    private readonly File $image,
     
     private bool $isPublic = false,
     
     #[Assert\Length(max: 255)]
-    private string $description = '',
+    private readonly string $description = '',
   ) {
     $this->id = ID::generate();
-  }
-  
-  /**
-   * @return ID
-   */
-  public function getId(): ID {
-    return $this->id;
   }
   
   /**
@@ -65,5 +62,9 @@ final readonly class UploadImageCommand implements CommandInterface {
    */
   public function getDescription(): string {
     return $this->description;
+  }
+  
+  public function forcePublic(): void {
+    $this->isPublic = true;
   }
 }

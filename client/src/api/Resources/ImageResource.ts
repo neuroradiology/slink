@@ -11,7 +11,7 @@ export class ImageResource extends AbstractResource {
     const body = new FormData();
     body.append('image', image);
 
-    return this.post('/upload', { body });
+    return this.post('/public/upload', { body });
   }
 
   public async remove(
@@ -24,7 +24,7 @@ export class ImageResource extends AbstractResource {
   }
 
   public async getDetails(id: string): Promise<ImageDetailsResponse> {
-    return this.get(`/image/${id}/detail`);
+    return this.get(`/public/image/${id}/detail`);
   }
 
   public async updateDetails(
